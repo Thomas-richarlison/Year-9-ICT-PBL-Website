@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Myanmar Fire Awareness – Disaster Risk Reduction</title>
+  <meta name="description"
+        content="An educational site about fire disasters in Myanmar: causes, statistics, preparedness and emergency response.">
+  <meta name="author" content="Year 9 Disaster Risk Reduction project">
+  <meta name="theme-color" content="#D64933">
+
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="apple-touch-icon" href="images/favicon.png">
+
+  <link rel="stylesheet" href="vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-icons.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+
+<body data-page="home">
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<header class="site-header">
+  <nav class="navbar navbar-expand-lg" id="siteNavbar" aria-label="Main navigation">
+    <div class="container">
+      <a class="navbar-brand order-lg-1" href="index.html">
+        <span class="brand-mark" aria-hidden="true"><i class="bi bi-fire"></i></span>
+        <span class="brand-full">Myanmar Fire Awareness</span>
+        <span class="brand-short">Myanmar Fire</span>
+      </a>
+      <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#mainMenu"
+                aria-controls="mainMenu" aria-expanded="false"
+                aria-label="Open menu" data-lang-key="nav.menu" data-lang-attr="aria-label">
+          <span class="navbar-toggler-icon"></span>
+       </button>
+      <div class="collapse navbar-collapse order-lg-2" id="mainMenu">
+        <ul class="navbar-nav centred">
+          <li class="nav-item"><a class="nav-link" href="index.html"   data-navlink="home"    aria-current="page">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html"   data-navlink="about">About Us</a></li>
+          <li class="nav-item dropdown info-dropdown"><a class="nav-link dropdown-toggle" href="info.html" data-navlink="info" role="button" data-bs-toggle="dropdown" aria-expanded="false">Info</a><ul class="dropdown-menu"><li><a class="dropdown-item" href="info.html#panel-causes">Causes</a></li><li><a class="dropdown-item" href="info.html#panel-stats">Statistics</a></li><li><a class="dropdown-item" href="info.html#panel-prepared">Preparedness</a></li><li><a class="dropdown-item" href="info.html#panel-refs">References</a></li><li><hr class="dropdown-divider"></li><li><a class="dropdown-item" href="info.html#emergency-numbers">Emergency numbers</a></li></ul></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html" data-navlink="contact">Contact Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="faq.html"     data-navlink="faq">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<noscript>
+  <div class="container py-3">
+    <p class="small-note mb-0">
+      <strong>Note:</strong> the Info page tabs and the contact form need
+      JavaScript. The information on this site is still fully readable without it.
+    </p>
+  </div
+</noscript>
+
+<main id="main-content">
+
+  <!-- =====================================================================
+       IMAGE CAROUSEL — fire-related photos to make the homepage more
+       informative and visual. Uses Bootstrap's Carousel component.
+       ===================================================================== -->
+  <section class="hero-carousel-section" aria-label="Fire awareness slideshow">
+    <div id="fireCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#fireCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#fireCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#fireCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        <button type="button" data-bs-target="#fireCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="images/carousel/firefighter.jpg" class="d-block w-100" alt="A firefighter spraying water onto a building fire" loading="eager">
+          <div class="carousel-caption">
+            <h3>When fire starts, call 191</h3>
+            <p>Myanmar Fire Services Department responds 24 hours a day, free of charge.</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="images/carousel/wildfire.jpg" class="d-block w-100" alt="Wildfire burning through dry forest and brush" loading="lazy">
+          <div class="carousel-caption">
+            <h3>Dry season, March to May, is peak fire risk</h3>
+            <p>Heat, wind and dry vegetation turn one spark into a whole lane of houses.</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="images/carousel/flame-closeup.jpeg" class="d-block w-100" alt="Close-up of orange flames burning wood" loading="lazy">
+          <div class="carousel-caption">
+            <h3>Most fires start from a small, ordinary mistake</h3>
+            <p>An unattended stove, an overloaded socket, a candle near cloth &mdash; all preventable.</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="images/carousel/flame-bright.jpeg" class="d-block w-100" alt="Bright orange fire flames rising" loading="lazy">
+          <div class="carousel-caption">
+            <h3>Understanding fire is the first step to preventing it</h3>
+            <p>Learn the causes, the numbers, and what to do before, during and after a fire.</p>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#fireCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#fireCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="hero" id="home">
+    <div class="container hero-inner">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-7">
+          <p class="hero-badge hero-anim">
+            <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+            <span>Disaster Risk Reduction · Myanmar</span>
+          </p>
+
+          <h1 class="display-title hero-anim">
+            <span>Fire Disasters</span><br>
+            <span class="accent">in Myanmar</span>
+          </h1>
+
+          <p class="hero-sub hero-anim">
+            Understanding, Preventing, and Responding
+          </p>
+
+          <p class="lead-text hero-anim mb-4">
+            Fire is the disaster Myanmar records most often. This site explains why fires
+            happen, where they happen, and exactly what you can do before, during and after one.
+          </p>
+
+          <div class="d-flex flex-wrap gap-3 hero-anim">
+            <a href="info.html" class="btn-editorial">
+              <span>Learn More</span>
+              <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
+            </a>
+            <a href="info.html#emergency-numbers" class="btn-editorial btn-editorial--secondary">
+              <i class="bi bi-telephone-fill" aria-hidden="true"></i>
+              <span>Emergency Numbers</span>
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="hero-emergency hero-anim">
+            <p class="label mb-1">Fire emergency number</p>
+            <p class="number anim-pop">191</p>
+            <p class="small-note mb-2">
+              Myanmar Fire Services Department — free call, 24 hours
+            </p>
+            <p class="small-note mb-0">
+              Ambulance 192 · Police 199 · Red Cross 01-295-133
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row hero-facts g-4 hero-anim">
+        <div class="col-md-4 hero-fact">
+          <div class="k" data-num-static="1,507">1,507</div>
+          <div class="v">fires recorded nationwide in 2022</div>
+        </div>
+        <div class="col-md-4 hero-fact">
+          <div class="k">#1</div>
+          <div class="v">Fire is Myanmar's most frequent disaster</div>
+        </div>
+        <div class="col-md-4 hero-fact">
+          <div class="k">191</div>
+          <div class="v">the fire emergency number, free, 24 hours</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white" id="fire-context">
+    <div class="container">
+      <div class="row g-4 g-lg-5 mb-4">
+        <div class="col-lg-2">
+          <p class="margin-label">
+            <span class="num" aria-hidden="true">01</span>
+            <span>The fire problem</span>
+          </p>
+        </div>
+        <div class="col-lg-8">
+          <h2 class="section-title">A disaster that is mostly preventable</h2>
+        </div>
+      </div>
+
+      <div class="row g-4 g-lg-5">
+        <div class="col-lg-7">
+          <p>
+            Fire is the hazard Myanmar reports more often than any other. The Myanmar Fire
+            Services Department usually records somewhere between about 900 and 2,100 fire
+            outbreaks in a year. In 2022 alone there were 1,507 outbreaks, 96 deaths and 139
+            injuries. Even one fire can wipe out a whole street of timber houses, and with it
+            a family's savings.
+          </p>
+          <p>
+            The causes, though, are ordinary and human: an unattended charcoal stove, an
+            overloaded extension socket, a candle during a power cut, a cigarette stub, a field
+            being cleared by burning. The Myanmar Fire Services Department leads prevention,
+            firefighting, rescue and public awareness, working with township fire stations,
+            auxiliary and volunteer firefighters, the Myanmar Red Cross Society and community
+            groups.
+          </p>
+          <blockquote class="pull-quote">
+            <span>“The major cause of fire cases in Myanmar is people's negligence when using fire.”</span>
+            <cite>UN-Habitat Myanmar, Manual on Fire — Causes, Effects, Preparedness</cite>
+          </blockquote>
+        </div>
+
+        <div class="col-lg-4 offset-lg-1">
+          <p class="eyebrow">At a glance</p>
+          <ul class="fact-list anim-list">
+            <li><span class="k">Most frequent disaster</span>
+                <span class="v">Fire (ahead of floods and cyclones)</span></li>
+            <li><span class="k">Typical yearly total</span>
+                <span class="v">About 900 – 2,100 outbreaks</span></li>
+            <li><span class="k">Peak risk months</span>
+                <span class="v">March to May (hot, dry season)</span></li>
+            <li><span class="k">Highest-risk regions</span>
+                <span class="v">Yangon, Mandalay, Ayeyarwady, Sagaing, Bago</span></li>
+            <li><span class="k">Lead agency</span>
+                <span class="v">Myanmar Fire Services Department</span></li>
+            <li><span class="k">Emergency call</span>
+                <span class="v"><strong>191</strong></span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white" id="explore">
+    <div class="container">
+      <div class="row g-4 g-lg-5 mb-4">
+        <div class="col-lg-2">
+          <p class="margin-label">
+            <span class="num" aria-hidden="true">GO</span>
+            <span>Explore this site</span>
+          </p>
+        </div>
+        <div class="col-lg-8">
+          <h2 class="section-title">Five pages, one goal — fewer fires</h2>
+          <p class="lead-text">
+            Every page is short, bilingual and printable. Start anywhere; the Info page holds
+            the full causes, statistics, preparedness and references material in one place.
+          </p>
+        </div>
+      </div>
+
+      <div class="row g-4 anim-cards">
+        
+        <div class="col-md-6 col-lg-3">
+          <a class="explore-card anim-card" href="about.html">
+            <span class="icon" aria-hidden="true"><i class="bi bi-people-fill"></i></span>
+            <h3>About Us</h3>
+            <p>
+              Who we are, our mission and vision, and why fire is Myanmar's most frequent disaster.
+            </p>
+            <span class="go">
+              <span>Open page</span>
+              <i class="bi bi-arrow-right" aria-hidden="true"></i>
+            </span>
+          </a>
+        </div>
+
+        
+        <div class="col-md-6 col-lg-3">
+          <a class="explore-card anim-card" href="info.html">
+            <span class="icon" aria-hidden="true"><i class="bi bi-journal-bookmark-fill"></i></span>
+            <h3>Info</h3>
+            <p>
+              Causes, statistics, preparedness and references — four tabs you can open with a hover.
+            </p>
+            <span class="go">
+              <span>Open page</span>
+              <i class="bi bi-arrow-right" aria-hidden="true"></i>
+            </span>
+          </a>
+        </div>
+
+        
+        <div class="col-md-6 col-lg-3">
+          <a class="explore-card anim-card" href="contact.html">
+            <span class="icon" aria-hidden="true"><i class="bi bi-envelope-fill"></i></span>
+            <h3>Contact Us</h3>
+            <p>
+              Send us a message, or find the emergency numbers every household should save.
+            </p>
+            <span class="go">
+              <span>Open page</span>
+              <i class="bi bi-arrow-right" aria-hidden="true"></i>
+            </span>
+          </a>
+        </div>
+
+        
+        <div class="col-md-6 col-lg-3">
+          <a class="explore-card anim-card" href="faq.html">
+            <span class="icon" aria-hidden="true"><i class="bi bi-patch-question-fill"></i></span>
+            <h3>FAQ</h3>
+            <p>
+              Ten questions people ask about fire in Myanmar, answered plainly.
+            </p>
+            <span class="go">
+              <span>Open page</span>
+              <i class="bi bi-arrow-right" aria-hidden="true"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="row g-2 align-items-start footer-cols">
+
+      <div class="col-lg-5 me-lg-auto">
+        <p class="footer-brand">
+          <span class="brand-mark" aria-hidden="true"><i class="bi bi-fire"></i></span>
+          <span>Myanmar Fire Awareness</span>
+        </p>
+        <p class="small-note mb-3">
+          Fire is the disaster Myanmar records most often — and most of it is preventable.
+        </p>
+        <p class="eyebrow" style="color:#8F8F8F;">Follow us</p>
+        <div class="social-row">
+          <a class="social-btn" href="#" aria-label="Our Facebook page">
+            <i class="bi bi-facebook" aria-hidden="true"></i>
+          </a>
+          <a class="social-btn" href="#" aria-label="Our TikTok account">
+            <i class="bi bi-tiktok" aria-hidden="true"></i>
+          </a>
+          <a class="social-btn" href="#" aria-label="Our Telegram channel">
+            <i class="bi bi-telegram" aria-hidden="true"></i>
+          </a>
+          <a class="social-btn" href="#" aria-label="Our Twitter (X) account">
+            <i class="bi bi-twitter-x" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-xl-2">
+        <p class="eyebrow" style="color:#8F8F8F;">Pages</p>
+        <ul class="list-unstyled small-note mb-0 footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="info.html">Info</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-3 col-xl-2">
+        <p class="eyebrow" style="color:#8F8F8F;">Fire emergency number</p>
+        <p style="font-family:var(--font-display);font-size:2rem;font-weight:700;color:#FF6B47;line-height:1;margin:0 0 .5rem;">
+          191
+        </p>
+        <a href="#main-content" id="backToTop" class="small-note"
+           style="text-decoration:underline;">Back to top</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="mb-0">
+        <span>Copyright &copy; 2026 Myanmar Fire Awareness. All rights reserved.</span>
+        <span class="d-block d-sm-inline mt-1 mt-sm-0">Created for educational purposes — Disaster Risk Reduction.</span>
+      </p>
+      <p class="mb-0">
+        This site is a student learning project. It is not an official source. In a real
+        emergency, call 191 and follow the instructions of the Myanmar Fire Services Department.
+      </p>
+    </div>
+  </div>
+</footer>
+
+  <script src="vendor/bootstrap.bundle.min.js"></script>
+  <script src="vendor/gsap.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

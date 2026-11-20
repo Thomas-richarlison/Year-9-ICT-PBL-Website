@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+ 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+  <title>Contact Us – Myanmar Fire Awareness</title>
+  <meta name="description"
+        content="Contact the Year 9 fire awareness project team, or reach the Myanmar Fire Services Department, Red Cross and other emergency contacts.">
+  <meta name="author" content="Year 9 Disaster Risk Reduction project">
+  <meta name="theme-color" content="#D64933">
+ 
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="apple-touch-icon" href="images/favicon.png">
+ 
+  <!-- Fonts + styles (same set as every page) -->
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-icons.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+ 
+<body data-page="contact">
+ 
+<a class="skip-link" href="#main-content" data-lang-key="a11y.skip">Skip to main content</a>
+ 
+<!-- =====================================================================
+     HEADER + STICKY NAVIGATION (identical on all five pages)
+     ===================================================================== -->
+<header class="site-header">
+  <nav class="navbar navbar-expand-lg" id="siteNavbar" aria-label="Main navigation">
+    <div class="container">
+
+      <a class="navbar-brand order-lg-1" href="index.html">
+        <span class="brand-mark" aria-hidden="true"><i class="bi bi-fire"></i></span>
+        <span class="brand-full">Myanmar Fire Awareness</span>
+        <span class="brand-short">Myanmar Fire</span>
+      </a>
+
+      <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#mainMenu"
+                aria-controls="mainMenu" aria-expanded="false"
+                aria-label="Open menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse order-lg-2" id="mainMenu">
+        <ul class="navbar-nav centred">
+          <li class="nav-item"><a class="nav-link" href="index.html"   data-navlink="home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html"   data-navlink="about">About Us</a></li>
+          <li class="nav-item dropdown info-dropdown"><a class="nav-link dropdown-toggle" href="info.html" data-navlink="info" role="button" data-bs-toggle="dropdown" aria-expanded="false">Info</a><ul class="dropdown-menu"><li><a class="dropdown-item" href="info.html#panel-causes">Causes</a></li><li><a class="dropdown-item" href="info.html#panel-stats">Statistics</a></li><li><a class="dropdown-item" href="info.html#panel-prepared">Preparedness</a></li><li><a class="dropdown-item" href="info.html#panel-refs">References</a></li><li><hr class="dropdown-divider"></li><li><a class="dropdown-item" href="info.html#emergency-numbers">Emergency numbers</a></li></ul></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html" data-navlink="contact">Contact Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="faq.html"     data-navlink="faq">FAQ</a></li>
+        </ul>
+      </div>
+
+    </div><!-- /.container -->
+  </nav>
+</header>
+ 
+<main id="main-content">
+ 
+  <!-- ===================================================================
+       PAGE HEADER - the compact "mini hero" every sub-page shares
+       =================================================================== -->
+  <section class="page-header">
+    <svg class="hero-pattern" aria-hidden="true" focusable="false"
+         width="100%" height="100%" preserveAspectRatio="none">
+      <defs>
+        <pattern id="diagLinesContact" width="26" height="26" patternUnits="userSpaceOnUse"
+                 patternTransform="rotate(35)">
+          <line x1="0" y1="0" x2="0" y2="26" stroke="currentColor"
+                stroke-width="1" opacity="0.28" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#diagLinesContact)" opacity="0.5" />
+    </svg>
+ 
+    <div class="container hero-inner">
+      <p class="hero-badge page-header-anim">
+        <i class="bi bi-envelope-fill" aria-hidden="true"></i>
+        <span data-lang-key="hero.badge">Disaster Risk Reduction · Myanmar</span>
+      </p>
+      <h1 class="display-title page-header-anim" data-lang-key="page.contactTitle">Contact Us</h1>
+      <p class="hero-sub page-header-anim mb-0" data-lang-key="page.contactLead">
+        Ask us about the project, or reach the people who respond when fire strikes.
+      </p>
+    </div>
+  </section>
+ 
+ 
+  <!-- ===================================================================
+       SECTION: Form + other ways to reach help
+       =================================================================== -->
+  <section class="section band-white" id="contact">
+    <div class="container">
+      <div class="row g-4 g-lg-5">
+ 
+        <!-- ==================== LEFT: the form ==================== -->
+        <div class="col-lg-7">
+ 
+          <!-- The success panel. hidden until the form passes validation.
+               aria-live="polite" makes screen readers announce it. -->
+          <div class="contact-success mb-4" id="contactSuccess" hidden tabindex="-1" aria-live="polite">
+            <i class="bi bi-check-circle-fill big-icon" aria-hidden="true"></i>
+            <h3 data-lang-key="contact.successTitle">Message ready — thank you!</h3>
+            <p data-lang-key="contact.successText">
+              This is a school demonstration form, so the message has not actually been sent
+              anywhere. To reach the real fire service, call 191.
+            </p>
+            <button type="button" class="btn-editorial btn-editorial--secondary mt-2" id="contactAgain">
+              <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+              <span data-lang-key="contact.sendAnother">Send another message</span>
+            </button>
+          </div>
+ 
+          <div class="contact-form-card">
+            <h2 class="section-title" data-lang-key="contact.formTitle">Send us a message</h2>
+            <p class="lead-text" data-lang-key="contact.formLead">
+              Tell us what you think of the project, or ask us anything about fire safety.
+              We read every message in class.
+            </p>
+ 
+            <!-- novalidate: WE do the validating (with translated error
+                 messages) instead of the browser's pop-ups. -->
+            <form id="contactForm" novalidate>
+ 
+              <div class="row g-3">
+                <!-- Name -->
+                <div class="col-md-6">
+                  <label class="contact-label" for="cfName" data-lang-key="contact.name">Your name</label>
+                  <input class="contact-input" id="cfName" name="name" type="text"
+                         autocomplete="name"
+                         placeholder="e.g. Aye Chan"
+                         data-lang-key="contact.namePh" data-lang-attr="placeholder">
+                  <span class="field-error" id="cfNameError" hidden></span>
+                </div>
+ 
+                <!-- Email -->
+                <div class="col-md-6">
+                  <label class="contact-label" for="cfEmail" data-lang-key="contact.email">Email address</label>
+                  <input class="contact-input" id="cfEmail" name="email" type="email"
+                         autocomplete="email"
+                         placeholder="you@example.com"
+                         data-lang-key="contact.emailPh" data-lang-attr="placeholder">
+                  <span class="field-error" id="cfEmailError" hidden></span>
+                </div>
+ 
+                <!-- Phone Number -->
+                <div class="col-md-6">
+                  <label class="contact-label" for="cfPhone">Phone Number</label>
+                  <input class="contact-input" id="cfPhone" name="phone" type="tel"
+                         inputmode="numeric" autocomplete="tel" maxlength="11"
+                         placeholder="Enter phone number">
+                  <span class="field-error" id="cfPhoneError" hidden></span>
+                </div>
+ 
+                <!-- Subject (a dropdown keeps the answers tidy for marking) -->
+                <div class="col-12">
+                  <label class="contact-label" for="cfSubject" data-lang-key="contact.subject">Subject</label>
+                  <select class="contact-select" id="cfSubject" name="subject">
+                    <option value="" selected data-lang-key="contact.chooseOne">Choose one…</option>
+                    <option value="question"   data-lang-key="contact.optQ">A question about fire safety</option>
+                    <option value="suggestion" data-lang-key="contact.optS">A suggestion for this website</option>
+                    <option value="feedback"   data-lang-key="contact.optF">Feedback on our project</option>
+                    <option value="other"      data-lang-key="contact.optO">Something else</option>
+                  </select>
+                  <span class="field-error" id="cfSubjectError" hidden></span>
+                </div>
+ 
+                <!-- Message -->
+                <div class="col-12">
+                  <label class="contact-label" for="cfMessage" data-lang-key="contact.message">Type Message</label>
+                  <textarea class="contact-textarea" id="cfMessage" name="message"
+                            placeholder="Write your message here…"
+                            data-lang-key="contact.messagePh" data-lang-attr="placeholder"></textarea>
+                  <span class="field-error" id="cfMessageError" hidden></span>
+                </div>
+ 
+                <!-- Send + honest demo note -->
+                <div class="col-12 d-flex flex-wrap align-items-center gap-3">
+                  <button type="submit" class="btn-editorial">
+                    <i class="bi bi-send-fill" aria-hidden="true"></i>
+                    <span data-lang-key="contact.send">Send message</span>
+                  </button>
+                  <p class="small-note mb-0" data-lang-key="contact.demoNote">
+                    Note: this form is a class demo — it does not send data to a server.
+                  </p>
+                </div>
+              </div>
+ 
+            </form>
+          </div>
+        </div>
+ 
+        <!-- ==================== RIGHT: other contacts ==================== -->
+        <div class="col-lg-4 offset-lg-1">
+          <p class="eyebrow mb-1" data-lang-key="contact.infoTitle">Other ways to reach help</p>
+          <p class="small-note mb-4" data-lang-key="contact.infoLead">
+            For real emergencies, always call the official numbers first.
+          </p>
+ 
+          <div class="d-flex flex-column gap-3">
+            <!-- Township fire station -->
+            <article class="contact-info-card">
+              <span class="icon" aria-hidden="true"><i class="bi bi-buildings-fill"></i></span>
+              <h3 data-lang-key="contact.mfsdTitle">Township fire station</h3>
+              <p data-lang-key="contact.mfsdText">
+                Your nearest Myanmar Fire Services Department station gives free fire-safety
+                advice, drills and demonstrations for schools and communities.
+              </p>
+            </article>
+ 
+ 
+            <!-- Red Cross -->
+            <article class="contact-info-card">
+              <span class="icon" aria-hidden="true"><i class="bi bi-heart-pulse-fill"></i></span>
+              <h3 data-lang-key="contact.redcrossTitle">Myanmar Red Cross Society</h3>
+              <p data-lang-key="contact.redcrossText">
+                First-aid training, emergency response and community disaster preparedness
+                across the country.
+              </p>
+            </article>
+ 
+            <!-- The emergency numbers again - the most important contact
+                 information on the whole site -->
+            <div class="emergency-row">
+              <p class="eyebrow mb-3" data-lang-key="prev.emergencyTitle">Emergency numbers in Myanmar</p>
+              <div class="row g-3">
+                <div class="col-6">
+                  <div class="emergency-item">
+                    <span class="n">191</span>
+                    <span class="t" data-lang-key="prev.em1">Fire and rescue</span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="emergency-item">
+                    <span class="n">192</span>
+                    <span class="t" data-lang-key="prev.em2">Ambulance</span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="emergency-item">
+                    <span class="n">199</span>
+                    <span class="t" data-lang-key="prev.em3">Police</span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="emergency-item">
+                    <span class="n n-long">01-295-133</span>
+                    <span class="t" data-lang-key="prev.em4">Myanmar Red Cross</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+</main>
+ 
+ 
+<!-- =====================================================================
+     FOOTER (identical on all five pages)
+     ===================================================================== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="row g-2 align-items-start footer-cols">
+
+      <div class="col-lg-5 me-lg-auto">
+        <p class="footer-brand">
+          <span class="brand-mark" aria-hidden="true"><i class="bi bi-fire"></i></span>
+          <span>Myanmar Fire Awareness</span>
+        </p>
+        <p class="small-note mb-3">
+          Fire is the disaster Myanmar records most often — and most of it is preventable.
+        </p>
+        <p class="eyebrow" style="color:#8F8F8F;">Follow us</p>
+        <div class="social-row">
+          <a class="social-btn" href="#" aria-label="Our Facebook page">
+            <i class="bi bi-facebook" aria-hidden="true"></i>
+          </a>
+          <a class="social-btn" href="#" aria-label="Our TikTok account">
+            <i class="bi bi-tiktok" aria-hidden="true"></i>
+          </a>
+          <a class="social-btn" href="#" aria-label="Our Telegram channel">
+            <i class="bi bi-telegram" aria-hidden="true"></i>
+          </a>
+          <a class="social-btn" href="#" aria-label="Our Twitter (X) account">
+            <i class="bi bi-twitter-x" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-xl-2">
+        <p class="eyebrow" style="color:#8F8F8F;">Pages</p>
+        <ul class="list-unstyled small-note mb-0 footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="info.html">Info</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-3 col-xl-2">
+        <p class="eyebrow" style="color:#8F8F8F;">Fire emergency number</p>
+        <p style="font-family:var(--font-display);font-size:2rem;font-weight:700;color:#FF6B47;line-height:1;margin:0 0 .5rem;">
+          191
+        </p>
+        <a href="#main-content" id="backToTop" class="small-note"
+           style="text-decoration:underline;">Back to top</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="mb-0">
+        <span>Copyright &copy; 2026 Myanmar Fire Awareness. All rights reserved.</span>
+        <span class="d-block d-sm-inline mt-1 mt-sm-0">Created for educational purposes — Disaster Risk Reduction.</span>
+      </p>
+      <p class="mb-0">
+        This site is a student learning project. It is not an official source. In a real
+        emergency, call 191 and follow the instructions of the Myanmar Fire Services Department.
+      </p>
+    </div>
+  </div>
+</footer>
+ 
+ 
+<!-- Scripts (order matters - see index.html for the CDN alternative) -->
+<script src="vendor/bootstrap.bundle.min.js"></script>
+<script src="vendor/gsap.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
