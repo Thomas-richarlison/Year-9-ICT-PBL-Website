@@ -1,0 +1,2367 @@
+/* ==========================================================================
+   PROJECT:  Year 9 ICT PBL -- Fire Safety in Myanmar
+   FILE:     css/style.css  (main custom stylesheet)
+   PURPOSE:  Layers the site's editorial look on top of Bootstrap 5.
+             Controls colours, fonts, layout, components and animations
+             for the whole bilingual (English / Burmese) website.
+   AUDIENCE: Year 9 ICT students (about 13-14 years old). Read top to bottom.
+   STRUCTURE (sections appear in this order):
+     1.  Design tokens (CSS variables in :root)
+     3.  Global reset & base elements
+     4.  Base typography
+     6.  Section & band layout
+     7.  Site header & navbar
+     8.  Navbar links & dropdown menu
+     9.  Nav controls, toggler & editorial buttons
+     10. Theme & language toggle switches
+     11. Homepage hero
+     12. Placeholder boxes & fact lists
+     13. Cause cards
+     14. Stat cards & disclaimer
+     15. Safety tip cards
+     16. Emergency numbers row
+     17. Quiz cards, options & feedback
+     18. Score panel & small buttons
+     19. Resource / download items
+     20. Site footer (base styles)
+     21. Skip link & keyboard focus
+     22. Motion preferences & scroll animations
+     23. Responsive breakpoints (navbar & general)
+     24. Interior page header & eyebrow override
+     25. Explore cards (homepage tiles)
+     26. Mission & vision cards
+     27. Team member cards
+     28. Info page (tabs & panels)
+     29. Contact form & success state
+     30. FAQ / Q&A accordion
+     31. Social buttons & footer links
+     32. Print styles
+     33. Footer contrast & hero fixes (late patches)
+   ========================================================================== */
+
+/* ===== 1. CSS CUSTOM PROPERTIES =====
+   The :root selector matches the whole document. The variables declared
+   here (names starting with two dashes, like --color-bg) are reusable
+   values. Any rule below can use them with var(--name). Think of them as
+   the site's settings: change a value once here and it updates everywhere. */
+:root {
+  
+/* Page background colour (near-white). */
+  --color-bg: #FAFAFA;            
+/* Alternate band background (light grey). */
+  --color-bg-alt: #F3F4F6;        
+/* Card / panel background (pure white). */
+  --color-surface: #FFFFFF;       
+/* Main body text colour (almost black). */
+  --color-text: #111111;          
+/* Slightly softer text colour, used for paragraphs. */
+  --color-text-soft: #1F2937;     
+/* Muted text colour for labels, captions and source notes. */
+  --color-muted: #374151;         
+/* Brand accent colour (warm red-orange). Used for highlights. */
+  --color-accent: #D64933;        
+/* Solid shade of the accent, used for button backgrounds. */
+  --color-accent-solid: #C8412C;  
+/* Darker accent used for link text on light backgrounds. */
+  --color-accent-ink: #A83526;    
+/* Secondary accent colour (warm orange / amber). */
+  --color-secondary: #F4A261;     
+/* Darker secondary, used for hover states and contrast. */
+  --color-secondary-ink: #E8873C; 
+/* Hairline divider colour (semi-transparent black). */
+  --color-rule: rgba(26, 26, 26, 0.16);   
+/* Stronger divider / border colour. */
+  --color-rule-strong: rgba(26, 26, 26, 0.35);
+/* Solid card border colour. */
+  --color-border: #E1E3E7;
+/* Green used for 'correct' quiz answers. */
+  --color-correct: #1E7A46;       
+/* Red used for 'wrong' quiz answers. */
+  --color-wrong: #B3261E;         
+/* Pale green background for the correct state. */
+  --color-correct-bg: #E7F4EC;
+/* Pale red background for the wrong state. */
+  --color-wrong-bg: #FBEAE9;
+/* Blue used for keyboard focus outlines. */
+  --color-focus: #1D4ED8;         
+
+  
+/* Subtle warm wash (10% accent) for decorative tints. */
+  --tint-warm-a: rgba(214, 73, 51, 0.10);
+/* Subtle warm wash (22% secondary) for decorative tints. */
+  --tint-warm-b: rgba(244, 162, 97, 0.22);
+
+  
+  
+/* Headings & labels font stack: Space Grotesk with fallbacks. */
+  --font-display: "Space Grotesk", "Inter", system-ui, -apple-system,
+                  "Segoe UI", Roboto, Arial, sans-serif;
+/* Paragraph text font stack: Inter with system fallbacks. */
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+               Arial, sans-serif;
+  
+/* Burmese (Myanmar) script font stack. */
+  --font-mm: "Noto Sans Myanmar", "Padauk", "Myanmar Text",
+             "Myanmar Sangam MN", "Inter", sans-serif;
+
+  
+/* Vertical padding inside every .section. clamp() grows smoothly with the viewport width. */
+  --space-section: clamp(3.5rem, 7vw, 6.5rem);  
+/* Standard corner radius for cards, buttons and inputs. */
+  --radius: 4px;                                 
+/* Maximum content width for layout containers. */
+  --maxw: 1240px;                                
+
+  
+/* How fast colours fade when switching between light and dark theme. */
+  --theme-speed: 0.3s;                           
+}
+/* ===== 3. GLOBAL RESET & BASE ELEMENTS =====
+   These rules set up sensible defaults for the whole page: how boxes are
+   sized, how the <html> and <body> elements look, and a shared transition
+   so themed components fade smoothly when the colour scheme changes. */
+/* Apply border-box sizing to everything so padding/borders do not expand element widths. */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+/* The <html> element (the whole page). */
+html {
+/* Clicking in-page links scrolls smoothly instead of jumping. */
+  scroll-behavior: smooth;         
+  
+/* Offset anchor jumps so the sticky navbar does not cover the heading. */
+  scroll-padding-top: 92px;
+}
+
+/* The <body> element (all visible content). */
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+/* 1.0625rem = 17px. Slightly larger than the browser default for readability. */
+  font-size: 1.0625rem;            
+  line-height: 1.7;
+/* Smooth font edges on Chrome / Safari / macOS. */
+  -webkit-font-smoothing: antialiased;
+  
+/* Fade body colours smoothly when switching themes. */
+  transition: background-color var(--theme-speed) ease,
+              color var(--theme-speed) ease;
+}
+
+
+/* Shared transition so themed components (navbar, cards, footer) fade together when the theme changes. */
+.navbar, .cause-card, .stat-card, .tip-card, .quiz-card, .resource-item,
+.site-footer, .placeholder-box, .hero {
+  transition: background-color var(--theme-speed) ease,
+              border-color var(--theme-speed) ease,
+              color var(--theme-speed) ease;
+}
+
+
+/* ===== 4. BASE TYPOGRAPHY =====
+   Default styling for text elements: links, images, headings, the big
+   display title, section titles, eyebrows (small labels), lead paragraphs,
+   pull quotes and small notes. These set the editorial look used across
+   every page. */
+/* Default link style. text-underline-offset lifts the underline off the text. */
+a { color: var(--color-accent-ink); text-underline-offset: 3px; }
+a:hover { color: var(--color-accent); }
+
+
+/* Responsive images: never wider than their container, keep aspect ratio. */
+img { max-width: 100%; height: auto; }
+
+
+/* All headings share the display font, bold weight and tight line height. */
+h1, h2, h3, h4, h5, .display-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+
+/* Big hero title. clamp() scales the size smoothly between 2.5rem and 5rem depending on screen width. */
+.display-title {
+  font-size: clamp(2.5rem, 6.5vw, 5rem);  
+  text-transform: uppercase;
+  letter-spacing: -0.035em;
+  margin: 0 0 1.25rem;
+}
+
+
+/* Medium section heading. */
+.section-title {
+  font-size: clamp(1.75rem, 3.6vw, 2.9rem);
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+  margin: 0 0 1rem;
+}
+
+/* The highlighted word inside a section title (the orange word). */
+.section-title .accent { color: var(--color-accent); }
+
+
+/* Small uppercase label that sits above titles. */
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin: 0 0 0.75rem;
+}
+
+
+/* Larger introductory paragraph. max-width: 62ch keeps line length comfortable to read. */
+.lead-text {
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  line-height: 1.6;
+  color: var(--color-text-soft);
+  max-width: 62ch;                 
+  margin-bottom: 0;
+}
+
+/* Default paragraph colour. */
+p { color: var(--color-text-soft); }
+/* Bold text uses the main text colour. */
+strong { color: var(--color-text); font-weight: 600; }
+
+
+/* Blockquote-style callout with an accent stripe on the left. */
+.pull-quote {
+  border-left: 4px solid var(--color-accent);
+  padding: 0.25rem 0 0.25rem 1.5rem;
+  margin: 2rem 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2.1vw, 1.55rem);
+  line-height: 1.35;
+  font-weight: 500;
+  color: var(--color-text);
+}
+/* The citation line shown under a pull quote. */
+.pull-quote cite {
+  display: block;
+  margin-top: 0.9rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-style: normal;
+  color: var(--color-muted);
+  letter-spacing: 0.02em;
+}
+
+
+/* Tiny helper text used for sources and captions. */
+.small-note {
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--color-muted);
+}
+/* ===== 6. SECTION & BAND LAYOUT =====
+   Helpers for structuring page content into horizontal bands: the standard
+   .section wrapper, the alternating .band-white / .band-grey backgrounds,
+   the sticky .margin-label used in side margins, and a simple .rule divider. */
+/* Standard vertical section wrapper. padding-block adds space top and bottom. */
+.section {
+  padding-block: var(--space-section);
+  border-top: 1px solid var(--color-rule);
+  position: relative;
+}
+
+
+/* White-background band for alternating section colours. */
+.band-white { background-color: var(--color-surface); }
+/* Grey-background band. */
+.band-grey  { background-color: var(--color-bg-alt); }
+
+
+/* Small sticky label that sits in the side margin on wide screens. */
+.margin-label {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+/* Tiny accent stripe above the label. */
+  border-top: 2px solid var(--color-accent);  
+  padding-top: 0.75rem;
+  display: inline-block;
+/* Stays in view while the user scrolls past it. */
+  position: sticky;                            
+  top: 110px;
+}
+/* The big number shown inside a margin label. */
+.margin-label .num {
+  display: block;
+  font-size: 1.5rem;
+  letter-spacing: 0;
+  color: var(--color-text);
+  margin-bottom: 0.35rem;
+}
+
+
+/* Horizontal divider line (a styled <hr> element). */
+.rule {
+  border: 0;
+  border-top: 1px solid var(--color-rule);
+  opacity: 1;
+  margin: 2.5rem 0;
+}
+
+
+/* ===== 7. SITE HEADER & NAVBAR =====
+   The sticky top navigation bar. Contains the site-header wrapper, the
+   .navbar itself (with a frosted-glass look), the scrolled state added by
+   main.js, the brand logo/name and the responsive short-brand fallback. */
+/* The sticky header. position: sticky keeps it at the top; z-index keeps it above content. */
+.site-header { position: sticky; top: 0; z-index: 1030; }
+
+/* The navigation bar inside the header. */
+.navbar {
+/* 88% background + 12% transparent, so the page shows through slightly. */
+  background-color: color-mix(in srgb, var(--color-bg) 88%, transparent);
+  
+/* Blurs whatever is behind the navbar (frosted-glass effect). */
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-rule);
+  padding-block: 0.55rem;
+  min-height: 72px;
+}
+
+
+/* Once the user scrolls, main.js adds .is-scrolled: navbar becomes solid with a shadow. */
+.navbar.is-scrolled {
+  background-color: var(--color-bg);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+  border-bottom-color: var(--color-rule-strong);
+}
+
+
+/* The site name / logo text in the navbar. */
+.navbar-brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text) !important;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+/* Allow the brand text to wrap onto two lines on narrow screens. */
+  white-space: normal;      
+  max-width: 60%;
+  line-height: 1.15;
+}
+
+/* A shorter brand label, hidden by default and shown only on very small screens. */
+.brand-short { display: none; }
+/* On very small screens, swap the full brand for the short one. */
+@media (max-width: 575.98px) {
+  .brand-full { display: none; }
+  .brand-short { display: inline; }
+}
+
+/* The small coloured square logo containing the fire icon. */
+.brand-mark {           
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  background-color: var(--color-accent);
+  color: #fff;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  flex: 0 0 auto;
+}
+
+
+/* ===== 8. NAVBAR LINKS & DROPDOWN MENU =====
+   Styling for the navigation links themselves, including the animated
+   underline on hover, plus the custom 'More info' dropdown menu (we hide
+   Bootstrap's default caret and draw our own arrow, and open the menu on
+   hover as well as click). */
+/* Centre the nav links horizontally on desktop. */
+.navbar-nav.centred {
+  margin-inline: auto;       
+  gap: 0.15rem;
+}
+/* Style for each navigation link. */
+.navbar .nav-link {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted) !important;
+  padding: 0.5rem 0.7rem !important;
+  position: relative;
+}
+.navbar .nav-link:hover,
+.navbar .nav-link:focus-visible { color: var(--color-text) !important; }
+
+
+/* An invisible underline that we animate in on hover. */
+.navbar .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0.7rem; right: 0.7rem; bottom: 0.25rem;
+  height: 2px;
+  background-color: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+/* Show the underline on hover, or when the link is marked active (.is-active is added by main.js). */
+.navbar .nav-link:hover::after,
+.navbar .nav-link.is-active::after { transform: scaleX(1); }
+.navbar .nav-link.is-active { color: var(--color-text) !important; }
+
+
+/* The 'More info' dropdown trigger in the navbar. */
+.navbar .info-dropdown > .dropdown-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* Hide Bootstrap's default caret so we can replace it with a custom arrow. */
+.navbar .info-dropdown > .dropdown-toggle::after {
+  
+  
+  border: none !important;
+  width: auto;
+  height: 2px;
+  background-color: var(--color-accent);
+}
+
+/* A small CSS-drawn arrow (rotated borders) next to the dropdown label. */
+.navbar .info-dropdown > .dropdown-toggle::before {
+  content: "";
+  display: inline-block;
+  width: 0.5em; height: 0.5em;
+  border-right: 1.5px solid var(--color-accent);
+  border-bottom: 1.5px solid var(--color-accent);
+  transform: rotate(45deg) translateY(-0.15em);
+  transition: transform 0.2s ease;
+  margin-left: 0.15em;
+}
+/* Flip the arrow when the menu is open or hovered. */
+.navbar .info-dropdown.show > .dropdown-toggle::before,
+.navbar .info-dropdown:hover > .dropdown-toggle::before {
+  transform: rotate(-135deg) translateY(0.1em);
+}
+
+
+/* The pop-up dropdown menu itself. */
+.navbar .info-dropdown .dropdown-menu {
+  --bs-dropdown-min-width: 14rem;
+  border: 1px solid var(--color-rule-strong, #E5E5E5);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  padding: 0.4rem;
+  margin-top: 0.35rem;
+  background-color: var(--color-surface, #FFFFFF);
+  font-family: var(--font-body);
+  
+}
+
+
+/* Each link inside the dropdown menu. */
+.navbar .info-dropdown .dropdown-item {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  border-radius: calc(var(--radius) - 2px);
+  padding: 0.55rem 0.85rem;
+}
+.navbar .info-dropdown .dropdown-item:hover,
+.navbar .info-dropdown .dropdown-item:focus-visible {
+  background-color: color-mix(in srgb, var(--color-accent) 10%, transparent);
+  color: var(--color-accent-ink);
+}
+/* Thin divider line between groups of dropdown items. */
+.navbar .info-dropdown .dropdown-divider {
+  margin: 0.35rem 0;
+  border-color: var(--color-rule, #E5E5E5);
+}
+
+
+/* Open the menu on hover, focus, or when .show is added by Bootstrap JS. */
+.navbar .info-dropdown:hover .dropdown-menu,
+.navbar .info-dropdown:focus-within .dropdown-menu,
+.navbar .info-dropdown.show .dropdown-menu {
+  display: block !important;
+  animation: infoDropdownIn 0.18s ease both;
+}
+
+/* Small fade-and-drop animation used when the dropdown opens. */
+@keyframes infoDropdownIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ===== 9. NAV CONTROLS, TOGGLER & EDITORIAL BUTTONS =====
+   The cluster of controls on the right of the navbar (theme and language
+   toggles), the hamburger button shown on small screens, and the main
+   .btn-editorial call-to-action button used across the site. */
+/* Container on the right of the navbar holding the toggles. */
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+
+/* The hamburger button shown on small screens. */
+.navbar-toggler {
+  border: 1px solid var(--color-rule-strong);
+  border-radius: var(--radius);
+  padding: 0.35rem 0.5rem;
+}
+/* Show a focus outline when the toggler is reached with the keyboard. */
+.navbar-toggler:focus-visible { box-shadow: 0 0 0 3px var(--color-focus); }
+/* The three-line icon inside the hamburger, drawn as an inline SVG. */
+.navbar-toggler-icon {
+  
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%236B7280' stroke-width='2' stroke-linecap='round' d='M4 8h22M4 15h22M4 22h22'/%3e%3c/svg%3e");
+}
+
+
+/* The main call-to-action button style used across the site. */
+.btn-editorial {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.6rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-accent-solid);
+  background-color: var(--color-accent-solid);
+  color: #FFFFFF;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease,
+              border-color 0.25s ease, transform 0.25s ease;
+}
+.btn-editorial:hover,
+.btn-editorial:focus-visible {
+  background-color: var(--color-accent-ink);
+  border-color: var(--color-accent-ink);
+  color: #FFFFFF;
+}
+
+/* In dark mode the button stays light, so use dark text on it. */
+[data-theme="dark"] .btn-editorial { color: #121212; }
+[data-theme="dark"] .btn-editorial:hover,
+[data-theme="dark"] .btn-editorial:focus-visible { color: #121212; }
+
+
+/* A secondary colour variant of the editorial button. */
+.btn-editorial--secondary {
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+  color: #1A1A1A;
+}
+.btn-editorial--secondary:hover,
+.btn-editorial--secondary:focus-visible {
+  background-color: var(--color-secondary-ink);
+  border-color: var(--color-secondary-ink);
+  color: #1A1A1A;
+}
+
+[data-theme="dark"] .btn-editorial--secondary,
+[data-theme="dark"] .btn-editorial--secondary:hover,
+[data-theme="dark"] .btn-editorial--secondary:focus-visible { color: #121212; }
+
+
+/* ===== 10. THEME & LANGUAGE TOGGLE SWITCHES =====
+   The sliding light/dark switch (.theme-toggle) and the EN | MY language
+   switch (.lang-toggle) in the navbar. */
+/* The light/dark mode switch (a sliding pill). */
+.theme-toggle {
+  width: 56px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid var(--color-rule-strong);
+  background-color: var(--color-bg-alt);
+  padding: 2px;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+/* The round knob that slides left/right inside the toggle. */
+.theme-toggle .knob {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-rule);
+  display: grid; place-items: center;
+  font-size: 0.7rem;
+  color: var(--color-accent);
+  transform: translateX(0);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* Slide the knob to the right in dark mode. */
+[data-theme="dark"] .theme-toggle .knob { transform: translateX(26px); }
+
+
+/* The EN | MY language switch button. */
+.lang-toggle {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  border: 1px solid var(--color-rule-strong);
+  background-color: transparent;
+  color: var(--color-text);
+  border-radius: var(--radius);
+  padding: 0.4rem 0.7rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+  transition: border-color 0.25s ease, color 0.25s ease,
+              background-color 0.25s ease;
+}
+.lang-toggle:hover,
+.lang-toggle:focus-visible {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+/* The active language half is coloured. */
+.lang-toggle .lang-on  { color: var(--color-accent); }
+/* The inactive language half is muted. */
+.lang-toggle .lang-off { color: var(--color-muted); }
+/* The '|' separator between the two language codes. */
+.lang-toggle .divider  { color: var(--color-rule-strong); }
+
+
+/* ===== 11. HOMEPAGE HERO =====
+   The big top banner on the homepage: the hero container, the small badge
+   above the title, the subtitle, the highlighted emergency hotline box,
+   and the row of quick facts at the bottom. */
+/* The big top banner on the homepage. */
+.hero {
+  position: relative;
+  overflow: hidden;
+/* Generous vertical space that scales with screen width. */
+  padding-block: clamp(4rem, 11vw, 8.5rem);
+  background-color: #ffffff;
+}
+
+
+/* Decorative pattern layer (currently disabled with display: none). */
+.hero-pattern {
+  display: none;
+}
+
+/* Wraps hero content so it can sit above the pattern layer. */
+.hero-inner { position: relative; z-index: 1; }
+
+
+/* Small pill label above the hero title (e.g. 'Year 9 ICT Project'). */
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--color-rule-strong);
+  border-radius: 999px;
+  padding: 0.32rem 0.85rem;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  background-color: var(--color-surface);
+  margin-bottom: 1.5rem;
+}
+html[lang="my"] .hero-badge { text-transform: none; letter-spacing: 0; font-family: var(--font-mm); }
+
+/* The subtitle paragraph under the hero title. */
+.hero-sub {
+  font-size: clamp(1.05rem, 1.9vw, 1.35rem);
+  line-height: 1.6;
+  color: var(--color-text-soft);
+  max-width: 46ch;
+  margin-bottom: 2rem;
+}
+html[lang="my"] .hero-sub { font-family: var(--font-mm); line-height: 1.85; }
+
+
+/* The highlighted emergency hotline box in the hero. */
+.hero-emergency {
+  border: 1px solid var(--color-rule-strong);
+  border-left: 4px solid var(--color-accent);
+  background-color: var(--color-surface);
+  border-radius: var(--radius);
+  padding: 1.6rem 1.5rem;
+}
+/* Tiny label above the hotline number. */
+.hero-emergency .label {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+html[lang="my"] .hero-emergency .label { font-family: var(--font-mm); letter-spacing: 0; text-transform: none; }
+
+/* The big hotline number itself. */
+.hero-emergency .number {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 7vw, 4.25rem);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-accent);
+  letter-spacing: -0.03em;
+  margin: 0.35rem 0 0.6rem;
+}
+
+
+/* Row of quick facts at the bottom of the hero. */
+.hero-facts {
+  border-top: 1px solid var(--color-rule);
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  padding-top: 1.5rem;
+}
+/* The big number in a fact. */
+.hero-fact .k {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.1;
+}
+/* The small caption under a fact number. */
+.hero-fact .v {
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  line-height: 1.4;
+  margin-top: 0.15rem;
+}
+html[lang="my"] .hero-fact .v { font-family: var(--font-mm); font-size: 0.85rem; }
+
+
+/* ===== 12. PLACEHOLDER BOXES & FACT LISTS =====
+   .placeholder-box is the dashed box shown where an image or diagram is
+   still missing. .fact-list is a two-column key/value list with dividers,
+   used for stat breakdowns. */
+/* A dashed box shown where an image/diagram is still missing. */
+.placeholder-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 240px;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-bg-alt);
+  
+/* Diagonal hatch pattern drawn with a repeating gradient. */
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent 0 10px,
+    color-mix(in srgb, var(--color-muted) 8%, transparent) 10px 11px
+  );
+  margin: 0;
+}
+/* Taller variant for portrait-shaped placeholders. */
+.placeholder-box.is-tall { min-height: 340px; }
+
+/* The icon at the top of a placeholder. */
+.placeholder-box .ph-icon {
+  font-size: 1.6rem;
+  color: var(--color-accent);
+  line-height: 1;
+}
+/* The caption text inside a placeholder. */
+.placeholder-box .ph-caption {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--color-muted);
+  margin: 0;
+}
+html[lang="my"] .placeholder-box .ph-caption { font-family: var(--font-mm); }
+/* Small tag in the corner of a placeholder (e.g. 'FIG 1'). */
+.placeholder-box .ph-tag {
+  position: absolute;
+  top: 0; right: 0;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--color-muted);
+  border-left: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  padding: 0.2rem 0.5rem;
+  border-bottom-left-radius: var(--radius);
+}
+
+
+/* A two-column key/value list with dividers between rows. */
+.fact-list { list-style: none; padding: 0; margin: 0; }
+.fact-list li {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--color-rule);
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+}
+/* Add a top border to the first item so the list looks closed. */
+.fact-list li:first-child { border-top: 1px solid var(--color-rule); }
+/* The left 'key' cell (small uppercase label). */
+.fact-list .k {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  flex: 0 0 42%;
+}
+html[lang="my"] .fact-list .k { font-family: var(--font-mm); letter-spacing: 0; text-transform: none; }
+/* The right 'value' cell. */
+.fact-list .v { font-size: 0.92rem; color: var(--color-text); flex: 1; }
+
+
+/* ===== 13. CAUSE CARDS =====
+   Cards on the 'Causes of fire' section. Each card has an icon, a title,
+   a short description and a small tag pinned to the bottom. */
+/* Card showing a single cause of fire. */
+.cause-card {
+  height: 100%;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.6rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  transition: border-color 0.25s ease, transform 0.25s ease,
+              background-color 0.3s ease;
+}
+/* Lift the card slightly on hover. */
+.cause-card:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-3px);       
+}
+/* The small icon badge at the top of a cause card. */
+.cause-card .icon {
+  width: 44px; height: 44px;
+  display: grid; place-items: center;
+  border-radius: var(--radius);
+  background-color: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  color: var(--color-accent);
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+.cause-card h3 {
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+html[lang="my"] .cause-card h3 { text-transform: none; font-size: 1.15rem; }
+.cause-card p { font-size: 0.92rem; margin: 0; line-height: 1.6; }
+html[lang="my"] .cause-card p { font-family: var(--font-mm); }
+/* Small tag pinned to the bottom of a cause card (pushed down by margin-top: auto). */
+.cause-card .tag {
+  margin-top: auto;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  border-top: 1px solid var(--color-rule);
+  padding-top: 0.6rem;
+}
+html[lang="my"] .cause-card .tag { font-family: var(--font-mm); letter-spacing: 0; text-transform: none; }
+
+
+/* ===== 14. STAT CARDS & DISCLAIMER =====
+   .stat-card shows a single statistic with a big number and a source
+   citation. .disclaimer is a dashed box used for notes and caveats. */
+/* Card showing a single statistic with a big number. */
+.stat-card {
+  height: 100%;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+/* Accent stripe along the top of every stat card. */
+  border-top: 3px solid var(--color-accent);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+}
+/* The big number itself. */
+.stat-number {
+  font-family: var(--font-display);
+  font-size: clamp(2.3rem, 4.4vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+  display: flex;
+  align-items: baseline;
+  gap: 0.15rem;
+}
+/* Small unit suffix (e.g. '%', 'k') next to the number. */
+.stat-number .suffix {
+  font-size: 0.42em;
+  color: var(--color-accent);
+  font-weight: 700;
+}
+/* The label under the number. */
+.stat-label {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--color-text-soft);
+  margin: 0.8rem 0 0.4rem;
+}
+html[lang="my"] .stat-label { font-family: var(--font-mm); }
+/* Tiny source citation, pushed to the bottom of the card. */
+.stat-source {
+  margin-top: auto;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+}
+html[lang="my"] .stat-source { font-family: var(--font-mm); }
+
+
+/* A dashed box for notes and disclaimers. */
+.disclaimer {
+  border: 1px dashed var(--color-rule-strong);
+  border-radius: var(--radius);
+  padding: 0.9rem 1.1rem;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--color-muted);
+  background-color: var(--color-main, transparent);
+}
+html[lang="my"] .disclaimer { font-family: var(--font-mm); }
+
+
+/* ===== 15. SAFETY TIP CARDS =====
+   .tip-card lists one safety tip with a step number, a heading and a
+   bullet list of actions. The .is-danger and .is-safe variants add a
+   coloured top stripe to show what NOT to do versus what TO do. */
+/* Card listing one safety tip with steps. */
+.tip-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.4rem 1.4rem 1.5rem;
+  height: 100%;
+  position: relative;
+}
+/* Small 'STEP 01' label at the top. */
+.tip-card .step {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--color-accent);
+  display: block;
+  margin-bottom: 0.55rem;
+}
+html[lang="my"] .tip-card .step { font-family: var(--font-mm); letter-spacing: 0; }
+.tip-card h3 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.7rem;
+}
+html[lang="my"] .tip-card h3 { text-transform: none; font-size: 1.1rem; }
+/* The bullet list of actions inside a tip card. */
+.tip-card ul { padding-left: 1.1rem; margin: 0; }
+.tip-card li {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--color-text-soft);
+  margin-bottom: 0.45rem;
+}
+html[lang="my"] .tip-card li { font-family: var(--font-mm); }
+
+
+/* Red top stripe: this tip is about what NOT to do. */
+.tip-card.is-danger { border-top: 3px solid var(--color-wrong); }
+/* Green top stripe: this tip is about what TO do. */
+.tip-card.is-safe   { border-top: 3px solid var(--color-correct); }
+
+
+/* ===== 16. EMERGENCY NUMBERS ROW =====
+   A bordered strip listing emergency contact numbers (fire brigade,
+   police, etc.), each shown as a big number with a small label. */
+/* A bordered strip listing emergency contact numbers. */
+.emergency-row {
+  border: 1px solid var(--color-rule-strong);
+  border-radius: var(--radius);
+  background-color: var(--color-surface);
+  padding: 1.25rem 1.4rem;
+  /* Make sure the row clips any accidental overflow so a long phone number
+     or label can never push text outside the visible border. */
+  overflow: hidden;
+}
+/* One number + its label, side by side. The flex-wrap rule lets the label
+   drop onto a second line if the number is long (e.g. "01-295-133") instead
+   of forcing the text outside the card border. min-width:0 on the label
+   lets it shrink and wrap properly inside a flex item. */
+.emergency-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.7rem;
+  min-width: 0;
+}
+/* The phone number itself. */
+.emergency-item .n {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  color: var(--color-accent);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+/* The label next to the number. */
+.emergency-item .t {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  min-width: 0;
+  /* Allow long labels like "Myanmar Red Cross" to wrap onto two lines
+     instead of overflowing the bordered card on the right. */
+  overflow-wrap: anywhere;
+}
+
+/* Smaller size for non-numeric contact info (e.g. an email address). */
+.emergency-item .n.n-long {
+  font-size: clamp(0.95rem, 1.8vw, 1.25rem);
+  white-space: nowrap;
+}
+html[lang="my"] .emergency-item .t { font-family: var(--font-mm); }
+
+
+/* ===== 17. QUIZ CARDS, OPTIONS & FEEDBACK =====
+   The interactive fire-safety quiz. Each .quiz-card holds one question
+   with .quiz-option answer rows. The hidden radio inputs are styled via
+   :has() and .state-correct / .state-wrong classes added by main.js after
+   the user clicks 'Check'. .quiz-feedback shows the explanation. */
+/* One quiz question and its answer options. */
+.quiz-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+/* Left accent stripe; colour changes to green/red after marking. */
+  border-left: 3px solid var(--color-rule-strong);
+  border-radius: var(--radius);
+  padding: 1.4rem 1.35rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Push the 'Check' button to the bottom-left of the card. */
+.quiz-card .check-btn { margin-top: auto; align-self: flex-start; }
+/* After checking, turn the left stripe green for a correct answer. */
+.quiz-card.is-marked-ok   { border-left-color: var(--color-correct); }
+/* ...or red for a wrong answer. */
+.quiz-card.is-marked-bad  { border-left-color: var(--color-wrong); }
+
+/* Small 'Q1' label above the question. */
+.quiz-qnum {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  display: block;
+  margin-bottom: 0.4rem;
+}
+/* The question text itself. */
+.quiz-question {
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 1rem;
+  line-height: 1.5;
+}
+html[lang="my"] .quiz-question { font-family: var(--font-mm); font-size: 1.05rem; line-height: 1.8; }
+
+
+/* A clickable answer option row. */
+.quiz-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-bg);
+  padding: 0.7rem 0.85rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--color-text-soft);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+html[lang="my"] .quiz-option { font-family: var(--font-mm); }
+.quiz-option:hover { border-color: var(--color-muted); }
+/* Hide the real radio input; the styled row is the clickable area. */
+.quiz-option input {
+  
+  position: absolute;
+  opacity: 0;
+  width: 1px; height: 1px;
+}
+/* The A/B/C/D letter badge on the left of an option. */
+.quiz-option .letter {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.78rem;
+  width: 22px; height: 22px;
+  flex: 0 0 22px;
+  display: grid; place-items: center;
+  border: 1px solid var(--color-rule-strong);
+  border-radius: 2px;
+  color: var(--color-muted);
+  background-color: var(--color-surface);
+}
+
+/* :has() targets an option whose hidden radio is checked -- highlight it. */
+.quiz-option:has(input:checked) {
+  border-color: var(--color-accent);
+  background-color: color-mix(in srgb, var(--color-accent) 7%, transparent);
+}
+.quiz-option:has(input:checked) .letter {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+}
+
+/* Show a focus outline when the hidden input has keyboard focus. */
+.quiz-option:has(input:focus-visible) {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+
+/* After marking: the correct option turns green. */
+.quiz-option.state-correct {
+  border-color: var(--color-correct);
+  background-color: var(--color-correct-bg);
+  color: var(--color-text);
+}
+.quiz-option.state-correct .letter {
+  background-color: var(--color-correct);
+  border-color: var(--color-correct);
+  color: #fff;
+}
+/* After marking: a wrongly selected option turns red. */
+.quiz-option.state-wrong {
+  border-color: var(--color-wrong);
+  background-color: var(--color-wrong-bg);
+  color: var(--color-text);
+}
+.quiz-option.state-wrong .letter {
+  background-color: var(--color-wrong);
+  border-color: var(--color-wrong);
+  color: #fff;
+}
+
+
+/* The 'Correct!' / 'Try again' message under each question. Hidden by default. */
+.quiz-feedback {
+  font-size: 0.86rem;
+  line-height: 1.55;
+  margin: 0.75rem 0 0;
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius);
+  display: none;         
+}
+html[lang="my"] .quiz-feedback { font-family: var(--font-mm); }
+/* Show the feedback in green for a correct answer. */
+.quiz-feedback.ok {
+  display: block;
+  color: var(--color-correct);
+  background-color: var(--color-correct-bg);
+  border: 1px solid color-mix(in srgb, var(--color-correct) 35%, transparent);
+}
+/* Show the feedback in red for a wrong answer. */
+.quiz-feedback.bad {
+  display: block;
+  color: var(--color-wrong);
+  background-color: var(--color-wrong-bg);
+  border: 1px solid color-mix(in srgb, var(--color-wrong) 35%, transparent);
+}
+
+
+/* ===== 18. SCORE PANEL & SMALL BUTTONS =====
+   .score-panel is the total-score summary shown at the end of the quiz.
+   .btn-small is a smaller secondary button (e.g. 'Reset quiz'). */
+/* The total-score summary panel at the end of the quiz. */
+.score-panel {
+  border: 1px solid var(--color-rule-strong);
+  border-radius: var(--radius);
+  background-color: var(--color-bg-alt);
+  padding: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  justify-content: space-between;
+}
+/* The big score number. */
+.score-panel .score-number {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-text);
+  letter-spacing: -0.03em;
+}
+/* A short message next to the score. */
+.score-panel .score-message { font-size: 0.9rem; color: var(--color-text-soft); margin: 0.3rem 0 0; }
+html[lang="my"] .score-panel .score-message { font-family: var(--font-mm); }
+
+
+/* A smaller secondary button (e.g. 'Reset quiz'). */
+.btn-small {
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-rule-strong);
+  background-color: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+.btn-small:hover,
+.btn-small:focus-visible { border-color: var(--color-accent); color: var(--color-accent); }
+/* Faded look when the button cannot be clicked. */
+.btn-small:disabled { opacity: 0.45; cursor: not-allowed; }
+html[lang="my"] .btn-small { font-family: var(--font-mm); letter-spacing: 0; text-transform: none; }
+
+
+/* ===== 19. RESOURCE / DOWNLOAD ITEMS =====
+   .resource-item is one download/external-link row in the resources list.
+   Each row has a title, a file-type badge and a short description, and
+   slides slightly to the right on hover. */
+/* A download / link row in the resources list. */
+.resource-item {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  border-top: 1px solid var(--color-rule);
+  padding: 1.25rem 0;
+  transition: background-color 0.2s ease, padding-left 0.25s ease;
+}
+/* Close the list with a bottom border on the last item. */
+.resource-item:last-of-type { border-bottom: 1px solid var(--color-rule); }
+/* On hover, tint the background and slide the row slightly to the right. */
+.resource-item:hover,
+.resource-item:focus-visible {
+  background-color: color-mix(in srgb, var(--color-accent) 6%, transparent);
+  padding-left: 0.75rem;      
+}
+/* Top row: title + file-type badge. */
+.resource-item .r-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+/* The resource title. */
+.resource-item h3 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 0;
+  color: var(--color-text);
+}
+html[lang="my"] .resource-item h3 { text-transform: none; font-size: 1.05rem; }
+/* Small badge showing the file type (e.g. 'PDF'). */
+.resource-item .r-ext { font-size: 0.8rem; color: var(--color-accent); }
+/* Short description under the title. */
+.resource-item p { font-size: 0.88rem; margin: 0.35rem 0 0; color: var(--color-muted); }
+html[lang="my"] .resource-item p { font-family: var(--font-mm); }
+
+
+/* ===== 20. SITE FOOTER (BASE STYLES) =====
+   The dark footer at the bottom of every page. Contains the brand, link
+   columns and a bottom strip with copyright + small links.
+
+   NOTE: every text colour declaration used to be `color: #000000` here,
+   which was unreadable on the dark #121212 background. Those declarations
+   were dead code, immediately overridden by the `!important` white rules
+   in Section 33 (FOOTER CONTRAST & VISIBILITY FIX). They have been removed
+   so the file no longer carries contradicting rules — Section 33 is the
+   single source of truth for footer text colour. The structural rules
+   (background, padding, border, layout, font) stay here. */
+/* The dark footer at the bottom of every page. */
+.site-footer {
+  background-color: #121212;
+  padding-block: 3rem 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+html[lang="my"] .site-footer p { font-family: var(--font-mm); }
+/* The brand name / logo in the footer. */
+.site-footer .footer-brand {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  display: flex; align-items: center; gap: 0.6rem;
+  margin-bottom: 0.85rem;
+}
+html[lang="my"] .site-footer .footer-brand { font-family: var(--font-mm); text-transform: none; }
+/* The bottom strip with copyright and small links. */
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  margin-top: 2.25rem;
+  padding-top: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: space-between;
+  font-size: 0.8rem;
+}
+html[lang="my"] .footer-bottom { font-family: var(--font-mm); }
+
+
+/* ===== 21. SKIP LINK & KEYBOARD FOCUS =====
+   Accessibility helpers. The .skip-link lets keyboard users jump straight
+   to the main content. The shared :focus-visible rule gives every
+   interactive element a clear blue outline when reached via the keyboard. */
+/* Hidden link that appears when keyboard users press Tab, letting them skip to the main content. */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+/* Park the link just off-screen so it is invisible until focused. */
+  top: -100px;
+  z-index: 2000;
+  background-color: var(--color-accent);
+  color: #FFFFFF;
+  padding: 0.7rem 1.1rem;
+  border-radius: var(--radius);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+/* Move the skip link into view when it receives focus. */
+.skip-link:focus {
+  top: 1rem;
+  color: #FFFFFF;
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+
+/* Shared keyboard-focus outline for all interactive elements. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+
+/* Reveal any visually-hidden element when it receives focus. */
+.visually-hidden-focusable:focus { position: static !important; }
+
+
+/* ===== 22. MOTION PREFERENCES & SCROLL ANIMATIONS =====
+   First, respect users who asked their OS to reduce motion. Then, the
+   scroll-reveal animations: main.js adds the .js-anim class to <html> and
+   the .is-visible class to elements as they scroll into view. Elements
+   start invisible and shifted, then animate into place. */
+/* If the user asked their OS to reduce motion, turn off smooth scroll and (almost) all animations. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+
+/* .js-anim is added by main.js. These elements start invisible and shifted down, then animate in when .is-visible is added. */
+html.js-anim .section-title,
+html.js-anim .eyebrow,
+html.js-anim .lead-text,
+html.js-anim .pull-quote,
+html.js-anim .anim-cards .anim-card,
+html.js-anim .anim-list li,
+html.js-anim .placeholder-box,
+html.js-anim .qna-item,
+html.js-anim .anim-pop {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+  will-change: opacity, transform;
+}
+
+
+/* List items slide in from the left instead of from below. */
+html.js-anim .anim-list li {
+  transform: translateX(-18px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+
+/* Cards start slightly smaller and shifted down. */
+html.js-anim .anim-cards .anim-card {
+  transform: translateY(26px) scale(0.96);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+
+/* 'Pop' elements start scaled down. */
+html.js-anim .anim-pop {
+  transform: scale(0.9);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+
+/* When main.js adds .is-visible, the element fades / slides into place. */
+html.js-anim .is-visible {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+
+/* ===== 23. RESPONSIVE BREAKPOINTS (NAVBAR & GENERAL) =====
+   Media queries that adjust the layout for tablets and phones: stack the
+   navbar links, shrink the toggle controls, and reduce section padding
+   and font sizes on small screens. */
+/* Tablet and smaller: stack the centred nav links vertically inside the collapsed menu. */
+@media (max-width: 991.98px) {
+  .navbar-nav.centred {
+    margin-inline: 0;
+    padding: 1rem 0 0.5rem;
+    gap: 0;
+  }
+  .navbar .nav-link { padding: 0.6rem 0 !important; }
+  .navbar .nav-link::after { left: 0; right: auto; width: 40px; bottom: 0.4rem; }
+  .margin-label { position: static; margin-bottom: 1rem; }
+  .float-md-emoji { display: none; }
+}
+
+
+/* Phone-sized: shrink the nav controls (theme/lang toggles) to fit. */
+@media (max-width: 575.98px) {
+  .nav-controls {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.4rem;
+    max-width: 58%;
+  }
+  .lang-toggle { padding: 0.32rem 0.5rem; font-size: 0.7rem; gap: 0.3rem; }
+  .theme-toggle { width: 48px; height: 26px; }
+  .theme-toggle .knob { width: 20px; height: 20px; font-size: 0.6rem; }
+  [data-theme="dark"] .theme-toggle .knob { transform: translateX(22px); }
+  .navbar { padding-block: 0.4rem; }
+  .navbar-brand { font-size: 0.72rem; max-width: 40%; }
+}
+
+
+/* Phone-sized: reduce section padding, font size and card spacing. */
+@media (max-width: 575.98px) {
+  body { font-size: 1rem; }
+  .section { padding-block: 3rem; }
+  .pull-quote { padding-left: 1rem; font-size: 1.1rem; }
+  .placeholder-box { min-height: 200px; }
+  .quiz-card { padding: 1.1rem 1rem; }
+  .score-panel { padding: 1.1rem; }
+  .hero-facts .hero-fact { margin-bottom: 1rem; }
+}
+
+
+/* ===== 24. INTERIOR PAGE HEADER & EYEBROW OVERRIDE =====
+   The strip directly under the navbar on interior pages (About, Info,
+   Contact, FAQ, Q&A). It is styled to match the homepage hero so the
+   space under the navbar looks consistent on every page. The .eyebrow
+   rule below overrides the earlier one so interior-page eyebrows use the
+   accent colour with no bottom margin. The original explanatory comments
+   are kept below. */
+/* Page header (the strip directly under the navbar on About / Info / Contact / FAQ / QNA).
+   This used to have an SVG pattern, a gradient and a bottom border, plus a smaller
+   padding than the home page. We now match the home page's .hero exactly so the
+   space under the navigation bar looks consistent on every page.
+   NOTE: there is a late `!important` override further down (search "PAGE HEADER
+   PADDING FIX") that pins both .hero and .page-header to padding 2rem 3rem, so
+   the values here are the defaults and the override is what actually wins. */
+.page-header {
+  position: relative;
+  overflow: hidden;
+  /* Same vertical breathing room as the home page hero (overridden later). */
+  padding-block: clamp(4rem, 11vw, 8.5rem);
+  /* Same plain white background as the home page hero. */
+  background-color: #ffffff;
+}
+
+/* The SVG pattern was removed from every page, so this rule is kept only as a
+   safety net in case any old cached HTML still references the class. */
+.page-header .hero-pattern { display: none; }
+
+.page-header .eyebrow { margin-bottom: 0.9rem; }
+
+
+/* Override of the .eyebrow style: on interior pages the eyebrow uses the accent colour and has no bottom margin. */
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-accent-ink);
+  margin: 0;
+}
+/* Burmese eyebrow: drop uppercase and letter-spacing. */
+html[lang="my"] .eyebrow { font-family: var(--font-mm); letter-spacing: 0; text-transform: none; }
+
+
+/* ===== 25. EXPLORE CARDS (HOMEPAGE TILES) =====
+   Clickable tiles that link to a section or page, used in the homepage
+   'Explore' grid. Each tile has an icon, a title, a short description and
+   a 'Go to ...' label with an arrow that nudges right on hover. */
+/* Clickable tile that links to a section / page. */
+.explore-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.4rem 1.3rem;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.25s ease, transform 0.25s ease,
+              background-color var(--theme-speed) ease;
+}
+/* Lift the tile slightly on hover. */
+.explore-card:hover,
+.explore-card:focus-visible {
+  border-color: var(--color-accent);
+  transform: translateY(-3px);
+  color: inherit;
+}
+/* Small icon badge at the top of the tile. */
+.explore-card .icon {
+  width: 44px; height: 44px;
+  display: grid; place-items: center;
+  border-radius: var(--radius);
+  background-color: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  color: var(--color-accent);
+  font-size: 1.2rem;
+  margin-bottom: 0.35rem;
+}
+.explore-card h3 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 0;
+}
+html[lang="my"] .explore-card h3 { text-transform: none; font-size: 1.08rem; }
+.explore-card p {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--color-muted);
+  margin: 0;
+  flex: 1;
+}
+html[lang="my"] .explore-card p { font-family: var(--font-mm); }
+/* 'Go to ...' label with an arrow at the bottom of the card. */
+.explore-card .go {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent-ink);
+  border-top: 1px solid var(--color-rule);
+  padding-top: 0.7rem;
+  margin-top: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+html[lang="my"] .explore-card .go { font-family: var(--font-mm); letter-spacing: 0; text-transform: none; }
+/* Nudge the arrow to the right when the card is hovered. */
+.explore-card:hover .go i { transform: translateX(3px); }
+.explore-card .go i { transition: transform 0.25s ease; }
+
+
+/* ===== 26. MISSION & VISION CARDS =====
+   .mv-card is used on the About page for the Mission and Vision blocks.
+   The .is-vision variant switches the top stripe and icon to the
+   secondary colour so the two cards look distinct. */
+/* Mission / Vision card on the About page. */
+.mv-card {
+  height: 100%;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--color-accent);
+  border-radius: var(--radius);
+  padding: 1.8rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+/* The 'Vision' variant uses the secondary colour for its top stripe. */
+.mv-card.is-vision { border-top-color: var(--color-secondary-ink); }
+.mv-card .icon {
+  width: 46px; height: 46px;
+  display: grid; place-items: center;
+  border-radius: var(--radius);
+  background-color: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  color: var(--color-accent);
+  font-size: 1.25rem;
+}
+/* Vision icon uses the secondary tint instead of the accent. */
+.mv-card.is-vision .icon {
+  background-color: color-mix(in srgb, var(--color-secondary) 18%, transparent);
+  color: var(--color-secondary-ink);
+}
+.mv-card h3 {
+  font-size: 1.15rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+html[lang="my"] .mv-card h3 { text-transform: none; font-size: 1.2rem; }
+.mv-card p { margin: 0; font-size: 0.98rem; line-height: 1.65; color: var(--color-text-soft); }
+html[lang="my"] .mv-card p { font-family: var(--font-mm); }
+
+
+/* ===== 27. TEAM MEMBER CARDS =====
+   .team-card shows one team member on the About page: a circular photo,
+   their name, role and a short bio. If no photo is supplied, the
+   member's initials are shown instead via the data-initials attribute. */
+/* Team member card on the About page. */
+.team-card {
+  height: 100%;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.7rem 1.4rem 1.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  transition: border-color 0.25s ease, transform 0.25s ease,
+              background-color var(--theme-speed) ease;
+}
+.team-card:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-3px);
+}
+
+/* Circular photo placeholder with a gradient background (shown if there is no photo). */
+.team-card .member-photo {
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary-ink) 100%);
+  display: grid; place-items: center;
+  position: relative;
+  border: 3px solid var(--color-surface);
+  box-shadow: 0 0 0 1px var(--color-border);
+}
+/* The actual photo, cropped to fill the circle. */
+.team-card .member-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* If there is no photo, show the member's initials (read from the data-initials attribute). */
+.team-card .member-photo.no-photo::before {
+  content: attr(data-initials);
+  color: #FFFFFF;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2.2rem;
+  letter-spacing: 0.04em;
+  display: grid; place-items: center;
+  width: 100%; height: 100%;
+}
+.team-card h3 {
+  font-size: 1.05rem;
+  margin: 0;
+  color: var(--color-text);
+}
+html[lang="my"] .team-card h3 { font-size: 1.12rem; }
+/* Small uppercase role label (e.g. 'Researcher'). */
+.team-card .role {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent-ink);
+  margin: 0;
+}
+html[lang="my"] .team-card .role { font-family: var(--font-mm); letter-spacing: 0; text-transform: none; font-size: 0.8rem; }
+/* Short bio paragraph. */
+.team-card .bio {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--color-muted);
+  margin: 0.35rem 0 0;
+}
+html[lang="my"] .team-card .bio { font-family: var(--font-mm); }
+
+
+/* ===== 28. INFO PAGE (TABS & PANELS) =====
+   The Info page layout: a two-column grid with a vertical list of tabs on
+   the left and content panels on the right. Tabs become a horizontal
+   scrollable strip on small screens. Each panel animates in when opened. */
+/* Small hint shown above the info tabs ('Click a topic ...'). */
+.info-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  margin-bottom: 1.4rem;
+}
+html[lang="my"] .info-hint { font-family: var(--font-mm); }
+.info-hint i { color: var(--color-accent); }
+
+/* Touch screens have no hover, so hide the hint there. */
+@media (hover: none) {
+  .info-hint { display: none; }
+}
+
+/* Two-column grid: tabs on the left, content on the right. */
+.info-layout {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);   
+  gap: 1.5rem;
+  align-items: start;
+}
+
+
+/* The vertical list of topic tabs. */
+.info-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+/* Tabs stay visible while the content on the right scrolls. */
+  position: sticky;
+  top: 100px;
+}
+
+/* One tab button. */
+.info-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+  text-align: left;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid transparent;
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+  cursor: pointer;
+  color: var(--color-text);
+  transition: border-color 0.22s ease, background-color 0.22s ease,
+              transform 0.22s ease;
+}
+/* Nudge the tab to the right on hover. */
+.info-tab:hover {
+  border-color: var(--color-accent);
+  transform: translateX(4px);
+}
+/* The active tab gets an accent left border and a tinted background. */
+.info-tab.is-open {
+  border-left-color: var(--color-accent);
+  background-color: color-mix(in srgb, var(--color-accent) 7%, var(--color-surface));
+}
+/* Small icon on the left of a tab. */
+.info-tab .t-icon {
+  width: 38px; height: 38px;
+  flex: 0 0 38px;
+  display: grid; place-items: center;
+  border-radius: var(--radius);
+  background-color: color-mix(in srgb, var(--color-accent) 10%, transparent);
+  color: var(--color-accent);
+  font-size: 1.05rem;
+}
+.info-tab .t-text { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
+/* The tab's title. */
+.info-tab .t-title {
+  font-family: var(--font-display);
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+html[lang="my"] .info-tab .t-title { font-family: var(--font-mm); letter-spacing: 0; text-transform: none; font-size: 0.98rem; }
+/* Short description under the tab title. */
+.info-tab .t-desc {
+  font-size: 0.74rem;
+  color: var(--color-muted);
+  line-height: 1.35;
+  overflow: hidden;
+/* Clip the description to a single line with an ellipsis. */
+  display: -webkit-box;
+  /*-webkit-line-clamp: 1; */
+  -webkit-box-orient: vertical;
+}
+html[lang="my"] .info-tab .t-desc { font-family: var(--font-mm); font-size: 0.78rem; }
+
+
+/* One content panel that matches a tab. scroll-margin-top leaves room for the sticky navbar.
+   Only the panel whose tab is currently selected is shown — all others are hidden via
+   display:none. The .is-open class is toggled on the panel by main.js setActiveInfoTab(). */
+.info-panel { display: none; margin-bottom: 3rem; scroll-margin-top: 100px; }
+.info-panel.is-open { display: block; }
+.info-panel:last-child { margin-bottom: 0; }
+
+
+/* Same navbar offset for the emergency-numbers anchor. */
+#emergency-numbers { scroll-margin-top: 100px; }
+
+
+/* The inner card of a panel. */
+.info-panel .info-panel-inner {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: clamp(1.4rem, 3vw, 2.2rem);
+}
+
+
+/* Header row of a panel (kicker + title + lead). */
+.info-panel-head { margin-bottom: 1.5rem; }
+/* Small numbered kicker above the panel title. */
+.info-panel-head .panel-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent-ink);
+  margin-bottom: 0.6rem;
+}
+html[lang="my"] .info-panel-head .panel-kicker { font-family: var(--font-mm); letter-spacing: 0; text-transform: none; }
+.info-panel-head .panel-kicker .k-num {
+  border: 1px solid var(--color-accent-ink);
+  border-radius: 2px;
+  padding: 0.05rem 0.35rem;
+}
+/* The panel's main heading. */
+.info-panel-head h2 { font-size: clamp(1.3rem, 2.6vw, 1.7rem); margin: 0 0 0.6rem; }
+.info-panel-head .lead-text { margin-bottom: 0; }
+
+
+/* Animate the panel contents in when the panel is opened. */
+html.js-anim .info-panel.is-open .info-panel-inner { animation: infoPanelIn 0.45s ease both; }
+/* The fade / slide animation used above. */
+@keyframes infoPanelIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* Tablet / mobile: tabs become a horizontal scrollable strip and the description is hidden. */
+@media (max-width: 991.98px) {
+  .info-layout { grid-template-columns: 1fr; }
+  .info-tabs {
+    position: static;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
+    scrollbar-width: thin;
+  }
+  .info-tab {
+    flex: 0 0 auto;
+    width: auto;
+    border-left: 1px solid var(--color-border);
+    border-bottom: 3px solid transparent;
+    padding: 0.6rem 0.85rem;
+  }
+  .info-tab:hover { transform: none; }
+  .info-tab.is-open {
+    border-left-color: var(--color-border);
+    border-bottom-color: var(--color-accent);
+  }
+  .info-tab .t-icon { width: 30px; height: 30px; flex: 0 0 30px; font-size: 0.9rem; }
+  .info-tab .t-desc { display: none; }
+}
+
+
+/* ===== 29. CONTACT FORM & SUCCESS STATE =====
+   The contact form on the Contact page: the card wrapper, labels, text
+   inputs, error messages, the 'message sent' success card and the side
+   cards with alternative contact details. */
+/* The card that wraps the contact form. */
+.contact-form-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: clamp(1.5rem, 3vw, 2.2rem);
+}
+
+/* Uppercase label above each form field. */
+.contact-label {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  margin-bottom: 0.35rem;
+  display: block;
+}
+html[lang="my"] .contact-label { font-family: var(--font-mm); letter-spacing: 0; text-transform: none; font-size: 0.85rem; }
+
+/* Shared style for all text inputs, selects and textareas. */
+.contact-input,
+.contact-select,
+.contact-textarea {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 0.7rem 0.85rem;
+  transition: border-color 0.2s ease, background-color var(--theme-speed) ease;
+}
+html[lang="my"] .contact-input,
+html[lang="my"] .contact-select,
+html[lang="my"] .contact-textarea { font-family: var(--font-mm); }
+/* Highlight the field with the accent colour when focused. */
+.contact-input:focus,
+.contact-select:focus,
+.contact-textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+/* Fields that failed validation get a red border. */
+.contact-input[aria-invalid="true"],
+.contact-select[aria-invalid="true"],
+.contact-textarea[aria-invalid="true"] { border-color: var(--color-wrong); }
+/* The message box: a bit taller and resizable vertically. */
+.contact-textarea { min-height: 140px; resize: vertical; }
+
+/* Red error message shown under an invalid field. */
+.field-error {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--color-wrong);
+}
+/* Green success indicator (tick) shown under a valid field — same slot as
+   the red error message, just a different colour and a tick icon. */
+.field-error.is-ok {
+  color: var(--color-correct);
+}
+.field-error .bi { font-size: 0.95rem; vertical-align: -0.1em; }
+html[lang="my"] .field-error { font-family: var(--font-mm); }
+
+
+/* The 'Message sent' card shown after a successful submit. */
+.contact-success {
+  background-color: var(--color-correct-bg);
+  border: 1px solid color-mix(in srgb, var(--color-correct) 40%, transparent);
+  border-radius: var(--radius);
+  padding: clamp(1.5rem, 3vw, 2.2rem);
+  text-align: center;
+}
+/* Large tick icon at the top of the success card. */
+.contact-success .big-icon {
+  font-size: 2rem;
+  color: var(--color-correct);
+  margin-bottom: 0.6rem;
+}
+.contact-success h3 { margin: 0 0 0.5rem; }
+html[lang="my"] .contact-success h3,
+html[lang="my"] .contact-success p { font-family: var(--font-mm); }
+.contact-success p { color: var(--color-text-soft); max-width: 52ch; margin-inline: auto; }
+
+
+/* Side card with alternative contact details (email, phone, address). */
+.contact-info-card {
+  height: 100%;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius);
+  padding: 1.4rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.contact-info-card .icon {
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  border-radius: var(--radius);
+  background-color: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  color: var(--color-accent);
+  font-size: 1.05rem;
+  margin-bottom: 0.2rem;
+}
+.contact-info-card h3 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 0;
+}
+html[lang="my"] .contact-info-card h3 { text-transform: none; font-size: 1.08rem; }
+.contact-info-card p {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--color-muted);
+  margin: 0;
+}
+html[lang="my"] .contact-info-card p { font-family: var(--font-mm); }
+
+
+/* ===== 30. FAQ / Q&A ACCORDION =====
+   .qna-item is one FAQ row, built with a native <details> element so it
+   expands/collapses without JavaScript. We hide the default triangle and
+   draw our own number badge and chevron, which rotates when the answer
+   is opened. */
+/* One FAQ row, built with a <details> element so it expands/collapses natively. */
+.qna-item {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  margin-bottom: 0.8rem;
+  overflow: hidden;
+  transition: border-color 0.25s ease, background-color var(--theme-speed) ease;
+}
+/* When the item is open, tint its border with the accent colour. */
+.qna-item[open] { border-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border)); }
+/* The clickable question row. */
+.qna-item summary {
+/* Hide the default disclosure triangle so we can draw our own. */
+  list-style: none;              
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1.05rem 1.2rem;
+  font-weight: 600;
+  font-size: 0.98rem;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+html[lang="my"] .qna-item summary { font-family: var(--font-mm); font-size: 1.02rem; }
+/* Also hide the default triangle in Chrome / Safari. */
+.qna-item summary::-webkit-details-marker { display: none; }
+.qna-item summary:hover { color: var(--color-accent-ink); }
+
+/* Small 'Q1' number badge on the left of the question. */
+.qna-item .q-num {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-accent);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 45%, transparent);
+  border-radius: 2px;
+  padding: 0.15rem 0.45rem;
+  flex: 0 0 auto;
+}
+/* The question text takes the remaining space. */
+.qna-item .q-text { flex: 1; }
+/* A chevron icon on the right that flips when the item opens. */
+.qna-item .q-chevron {
+  flex: 0 0 auto;
+  color: var(--color-accent);
+  font-size: 0.95rem;
+  transition: transform 0.25s ease;
+}
+/* Rotate the chevron 180 degrees when the answer is shown. */
+.qna-item[open] .q-chevron { transform: rotate(180deg); }
+
+/* The answer text. */
+.qna-answer {
+  padding: 0 1.2rem 1.2rem;
+/* Indent the answer to align with the question text (offset for the Q-number). */
+  padding-left: calc(1.2rem + 3.4rem);   
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--color-text-soft);
+  border-top: 1px solid var(--color-rule);
+  padding-top: 0.95rem;
+  margin: 0;
+}
+html[lang="my"] .qna-answer { font-family: var(--font-mm); }
+
+/* On phones, drop the indentation so the answer uses the full width. */
+@media (max-width: 575.98px) {
+  .qna-answer { padding-left: 1.2rem; }
+}
+
+
+/* ===== 31. SOCIAL BUTTONS & FOOTER LINKS =====
+   The row of round social-media icon buttons in the footer, plus the
+   styling for the footer's link lists. */
+/* Row of social-media icon buttons in the footer. */
+.social-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+/* One round social icon button. */
+.social-btn {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #000000;
+  font-size: 1.05rem;
+  text-decoration: none;
+  transition: background-color 0.25s ease, color 0.25s ease,
+              border-color 0.25s ease, transform 0.25s ease;
+}
+/* On hover, fill the button with the accent colour and lift it. */
+.social-btn:hover,
+.social-btn:focus-visible {
+  background-color: #FF6B47;
+  border-color: #FF6B47;
+  color: #FFFFFF;
+  transform: translateY(-3px);
+}
+
+
+/* Spacing between items in a footer link list. */
+.site-footer .footer-links li { margin-bottom: 0.55rem; }
+/* Footer link text style. */
+.site-footer .footer-links a {
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+/* Underline footer links on hover. */
+.site-footer .footer-links a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+
+/* ===== 32. PRINT STYLES =====
+   When the user prints the page, hide the navbar, hero pattern and skip
+   link, switch to plain black on white, and reduce section padding so the
+   printout is shorter. */
+/* Print-only rules: hide interactive chrome and use plain black on white. */
+@media print {
+  .site-header, .hero-pattern, .skip-link { display: none !important; }
+  body { background: #fff; color: #000; }
+/* Reduce section padding and use a light grey divider for print. */
+  .section { padding-block: 1.5rem; border-top: 1px solid #ccc; }
+}
+
+
+/* ===== 33. FOOTER CONTRAST & HERO FIXES (LATE PATCHES) =====
+   The rules below were added later to fix two problems: footer text was
+   not readable on the dark background, and the homepage hero had too much
+   padding / faded text. They use !important so they win over the earlier
+   rules above. The original explanatory comments are kept intact. */
+/* ==========================================================================
+   FOOTER CONTRAST & VISIBILITY FIX
+   ========================================================================== */
+/* Force every footer text element to white for readability on the dark background. */
+.site-footer,
+.site-footer p,
+.site-footer span,
+.site-footer div,
+.site-footer a,
+.site-footer .small-note,
+.site-footer .eyebrow,
+.site-footer .footer-brand,
+.site-footer .footer-links a {
+  color: #FFFFFF !important;
+}
+
+/* Footer link hover uses the warm secondary colour. */
+.site-footer a:hover {
+  color: #F4A261 !important;
+}
+
+
+/* ==========================================================================
+   HOMEPAGE HERO PADDING & TEXT CONTRAST FIX
+   ========================================================================== */
+/* Tighten the homepage hero's top/bottom padding so content sits closer to the navbar. */
+.hero {
+  padding-block: 2rem 3rem !important;
+}
+
+/* ==========================================================================
+   PAGE HEADER PADDING FIX (matches .hero above so the strip under the navbar
+   looks identical on the About / Info / Contact / FAQ / QNA pages)
+   ========================================================================== */
+/* Pin the interior-page header to the SAME 2rem 3rem padding as the homepage
+   hero. The .page-header rule earlier in this file sets a clamp() default, but
+   the homepage hero is itself overridden to 2rem 3rem just above, so we mirror
+   that here to keep the two sections visually aligned. */
+.page-header {
+  padding-block: 2rem 3rem !important;
+}
+
+/* Remove any extra top margin/padding on the page-header inner wrapper, again
+   mirroring the .hero-inner rule below. */
+.page-header .hero-inner {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Remove any extra top margin/padding on the hero inner wrapper. */
+.hero-inner {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Make sure the hero lead text is fully opaque dark grey. */
+.hero .lead-text {
+  color: #1F2937 !important;
+  opacity: 1 !important;
+}
+
+/* Ensure JavaScript animations don't leave text hidden/faded */
+/* Make sure the hero elements are always visible, even before the JS animation runs. */
+html.js-anim .hero-anim,
+html.js-anim .lead-text,
+html.js-anim .display-title,
+html.js-anim .hero-badge,
+html.js-anim .hero-sub,
+html.js-anim .page-header-anim {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+
+/* ===== 16. HOMEPAGE HERO CAROUSEL =====
+   A full-width Bootstrap carousel of fire-related photos that sits between
+   the navbar and the hero text. The images make the homepage more
+   informative and visual instead of being text-only. */
+
+.hero-carousel-section {
+  position: relative;
+  background-color: #1a1a1a;
+  margin-top: 0;
+}
+
+.hero-carousel-section .carousel {
+  /* Cap the carousel height so images don't push the page too tall. */
+  max-height: 540px;
+  overflow: hidden;
+}
+
+.hero-carousel-section .carousel-item {
+  /* The images are 1600 wide; force a fixed aspect ratio container so all
+     slides have the same height regardless of source dimensions. */
+  aspect-ratio: 16 / 7;
+  background-color: #1a1a1a;
+}
+
+.hero-carousel-section .carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Subtle dark gradient at the bottom so the caption text is readable. */
+  filter: brightness(0.85);
+}
+
+.hero-carousel-section .carousel-caption {
+  left: 8%;
+  right: 8%;
+  bottom: 1.5rem;
+  text-align: left;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
+}
+
+.hero-carousel-section .carousel-caption h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  margin-bottom: 0.4rem;
+}
+
+.hero-carousel-section .carousel-caption p {
+  font-size: clamp(0.85rem, 1.4vw, 1rem);
+  color: #f4f4f4;
+  margin-bottom: 0;
+  max-width: 60ch;
+}
+
+/* Stronger, fire-tinted control arrows so they are visible on any photo. */
+.hero-carousel-section .carousel-control-prev-icon,
+.hero-carousel-section .carousel-control-next-icon {
+  background-color: rgba(214, 73, 51, 0.65);
+  border-radius: 50%;
+  padding: 1.2rem;
+  background-size: 55% 55%;
+}
+
+.hero-carousel-section .carousel-indicators {
+  margin-bottom: 0.5rem;
+}
+
+.hero-carousel-section .carousel-indicators button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background-color: transparent;
+  opacity: 0.7;
+}
+
+.hero-carousel-section .carousel-indicators button.active {
+  background-color: #ff6b47;
+  border-color: #ff6b47;
+  opacity: 1;
+}
+
+@media (max-width: 767.98px) {
+  .hero-carousel-section .carousel-item {
+    aspect-ratio: 4 / 3;
+  }
+  .hero-carousel-section .carousel-caption {
+    left: 5%;
+    right: 5%;
+    bottom: 0.6rem;
+  }
+}
